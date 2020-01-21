@@ -9,18 +9,18 @@ using XcantloadX.DL.Music;
 /// </summary>
 public class BeatAnimationBinding : BeatTrigger 
 {
-    public Animation anim;
+    public new Animation animation;
 
-    protected void Start()
+    protected new void Start()
     {
         base.Start();
-        this.anim = this.GetComponent<Animation>();
-        if (this.anim == null)
+        this.animation = this.GetComponent<Animation>();
+        if (this.animation == null)
             throw new Exception("Add a Animation first!");
     }
 
     protected override void OnBeatTrigger()
     {
-        this.anim.Play();
+        this.animation.Play();
     }
 }

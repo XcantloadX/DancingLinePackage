@@ -46,16 +46,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Script\LevelContoller.cs" />
-     <Compile Include="Assets\Script\Line\TheLine.cs" />
+     <Compile Include="Assets\Script\Level\CameraFollowing.cs" />
+     <Compile Include="Assets\Script\Level\LevelContoller.cs" />
+     <Compile Include="Assets\Script\Level\TheLine.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Animation\BeatAnimationBinding.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Animation\RelativePositonForAnimation.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\MojoJson.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\BeatTrigger.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\MalodySong.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\MusicPlayer.cs" />
-     <Compile Include="Assets\Tests\PlayerTester.cs" />
-     <Compile Include="Assets\Tests\TestAnimator.cs" />
+     <Compile Include="Assets\Test\AutoPlayTest.cs" />
+     <Compile Include="Assets\Test\PlayerTester.cs" />
+     <Compile Include="Assets\Test\TestAnimator.cs" />
      <None Include="Assets\Plugins\DOTween\readme.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>F:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
