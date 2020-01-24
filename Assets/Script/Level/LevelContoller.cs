@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using XcantloadX.DL.Music;
@@ -12,11 +13,26 @@ namespace XcantloadX.DL.Main
     {
         public TheLine line;
         public MusicPlayer musicPlayer;
-        public bool isStarted = false;
+        private bool isStarted = false;
+
+        private static LevelContoller _ins = null;
+        public static LevelContoller instance
+        {
+            get
+            {
+                if (_ins == null)
+                    _ins = GameObject.FindObjectOfType<LevelContoller>();
+                return _ins;
+            }
+        }
+
 
         void Start () 
         {
-
+            if (this.musicPlayer == null)
+                Debug.LogWarning("No MusicPlayer.");
+            if (this.line == null)
+                throw new Exception("No Line.");
         }
             
         void Update () 
@@ -35,13 +51,22 @@ namespace XcantloadX.DL.Main
         }
 
         /// <summary>
-        /// 开始关卡
+        /// 开始游戏
         /// </summary>
         public void StartLevel()
         {
             this.isStarted = true;
             this.line.StartLine();
-            this.musicPlayer.Play();
+            if(this.musicPlayer != null)
+                this.musicPlayer.Play();
+        }
+
+        /// <summary>
+        /// 停止游戏
+        /// </summary>
+        public void StopLevel()
+        {
+            this.musicPlayer.Pause();
         }
     }
 }

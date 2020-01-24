@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Script\Helper\RoadBuilder.cs" />
      <Compile Include="Assets\Script\Level\CameraFollowing.cs" />
      <Compile Include="Assets\Script\Level\LevelContoller.cs" />
      <Compile Include="Assets\Script\Level\TheLine.cs" />
@@ -55,6 +56,7 @@
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\BeatTrigger.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\MalodySong.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\MusicPlayer.cs" />
+     <Compile Include="Assets\Script\Util\Util.cs" />
      <Compile Include="Assets\Test\AutoPlayTest.cs" />
      <Compile Include="Assets\Test\PlayerTester.cs" />
      <Compile Include="Assets\Test\TestAnimator.cs" />

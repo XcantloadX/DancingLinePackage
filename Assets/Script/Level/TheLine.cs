@@ -16,9 +16,16 @@ namespace XcantloadX.DL.Main
         private GameObject bodyParent;
         private BoxCollider bodyCollider;
 
+        public AudioClip hitSound;
+
+        public delegate void OnRotate(int direction);
+        public event OnRotate RotateEvent;
+
+        public const string OBSTACLE = "Obstacle";
+
         void Start () 
         {
-
+            //Util.CheckNull(this.hitSound, "Empty hit sound.");
         }
 
 
@@ -28,6 +35,12 @@ namespace XcantloadX.DL.Main
                 return;
 
             Move();
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.tag == TheLine.OBSTACLE)
+                KillLine();
         }
 
         /// <summary>
@@ -41,6 +54,16 @@ namespace XcantloadX.DL.Main
         }
 
         /// <summary>
+        /// 杀死线
+        /// </summary>
+        public void KillLine()
+        {
+            LevelContoller.instance.StopLevel();
+            this.isStarted = false;
+            AudioSource.PlayClipAtPoint(this.hitSound, Camera.main.transform.position);
+        }
+
+        /// <summary>
         /// 转向
         /// </summary>
         public void Rotate()
@@ -49,6 +72,9 @@ namespace XcantloadX.DL.Main
             this.transform.rotation = Quaternion.Euler(0, 90 * this.direction, 0);
 
             CreateBody();
+
+            if (this.RotateEvent != null)
+                this.RotateEvent(this.direction);
         }
 
         //移动
@@ -75,6 +101,7 @@ namespace XcantloadX.DL.Main
                 this.body.transform.position = this.transform.position - new Vector3(forward.x * (this.bodyCollider.bounds.size.x / 2 + 0.5f), 0, 0);
         }
 
+        //创建线的身体部分
         private void CreateBody()
         {
             this.body = GameObject.CreatePrimitive(PrimitiveType.Cube);

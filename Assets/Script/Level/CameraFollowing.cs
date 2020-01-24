@@ -4,10 +4,12 @@ using UnityEngine;
 
 namespace XcantloadX.DL.Main
 {
+    /// <summary>
+    /// 相机跟随
+    /// </summary>
     [RequireComponent(typeof(Camera))]
     public class CameraFollowing : MonoBehaviour 
     {
-        //public Vector3 startPosition;
         public Transform target;
         private Vector3 offset;
 
