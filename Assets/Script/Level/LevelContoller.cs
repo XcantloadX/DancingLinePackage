@@ -11,7 +11,9 @@ namespace XcantloadX.DL.Main
     /// </summary>
     public class LevelContoller : MonoBehaviour 
     {
+        [NullCheck]
         public TheLine line;
+        [NullCheck(false)]
         public MusicPlayer musicPlayer;
         private bool isStarted = false;
 
@@ -29,10 +31,7 @@ namespace XcantloadX.DL.Main
 
         void Start () 
         {
-            if (this.musicPlayer == null)
-                Debug.LogWarning("No MusicPlayer.");
-            if (this.line == null)
-                throw new Exception("No Line.");
+            NullCheck.Check(this);
         }
             
         void Update () 

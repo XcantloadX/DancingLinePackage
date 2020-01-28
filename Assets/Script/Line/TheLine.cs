@@ -16,7 +16,10 @@ namespace XcantloadX.DL.Main
         private GameObject bodyParent;
         private BoxCollider bodyCollider;
 
+        [NullCheck]
         public AudioClip hitSound;
+
+        public Color lineColor = Color.white;
 
         public delegate void OnRotate(int direction);
         public event OnRotate RotateEvent;
@@ -25,7 +28,8 @@ namespace XcantloadX.DL.Main
 
         void Start () 
         {
-            //Util.CheckNull(this.hitSound, "Empty hit sound.");
+            NullCheck.Check(this);
+            this.GetComponent<MeshRenderer>().material.color = this.lineColor;
         }
 
 
@@ -105,8 +109,15 @@ namespace XcantloadX.DL.Main
         private void CreateBody()
         {
             this.body = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+            //
             this.body.transform.parent = this.bodyParent.transform;
-            this.bodyCollider = this.body.GetComponent<BoxCollider>(); //取消碰撞
+
+            //设置颜色
+            this.body.GetComponent<MeshRenderer>().material.color = this.lineColor;
+
+            //取消碰撞
+            this.bodyCollider = this.body.GetComponent<BoxCollider>(); 
             this.bodyCollider.isTrigger = true;
 
             Vector3 forward = this.transform.forward;
