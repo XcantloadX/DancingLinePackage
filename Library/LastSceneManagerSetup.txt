@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scene/GreenBackgroundDL.unity
+- path: Assets/Test/DLTest.unity
   isLoaded: 1
   isActive: 1
