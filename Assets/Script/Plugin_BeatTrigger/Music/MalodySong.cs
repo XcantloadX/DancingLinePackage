@@ -76,4 +76,24 @@ public class MalodySong
 		song.SecPerBeat = 60f / song.Bpm;
 		return song;
 	}
+
+    /// <summary>
+    /// 将秒转换为节拍
+    /// </summary>
+    /// <param name="time">秒</param>
+    /// <returns>节拍</returns>
+    public double Time2Beat(double time)
+    {
+        return Bpm * time / 60f;
+    }
+
+    /// <summary>
+    /// 将节拍转换为秒
+    /// </summary>
+    /// <param name="beat">节拍</param>
+    /// <returns>秒</returns>
+    public double Beat2Time(double beat)
+    {
+        return beat / Bpm * 60f;
+    }
 }

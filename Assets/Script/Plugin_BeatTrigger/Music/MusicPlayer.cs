@@ -4,22 +4,30 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// 音乐播放器
+/// 播放音乐
 /// </summary>
 namespace XcantloadX.DL.Music
 {
     public class MusicPlayer : MonoBehaviour
     {
-
+        
         private AudioSource audioSource;
         public MalodySong Song { get; private set;}
+
+        [Header("Music")]
         [SerializeField] private AudioClip audioClip; //待播放的 AudioClip
         public string beatmapPath;
 
         [SerializeField] private double startTime = 0;
         [SerializeField] private double timePosition = 0; //当前的播放位置（秒）
-        [SerializeField] private double beatPosition = 0; //当前的播放位置（节拍）
-        [SerializeField] public int currentIndex = 0;
+        /// <summary>
+        /// 当前播放位置（以节拍计）
+        /// </summary>
+        [SerializeField] private double beatPosition = 0; 
+        /// <summary>
+        /// 当前播放位置（以数组下标计）
+        /// </summary>
+        [SerializeField] private int currentIndex = 0;
 
         private bool isInited = false; //是否已经初始化
 
@@ -44,16 +52,30 @@ namespace XcantloadX.DL.Music
 
         public bool IsPlaying{ get; private set; }
 
+        [Header("Offset")]
         /// <summary>
         /// 进行时间对比时允许的误差范围
         /// </summary>
         [Tooltip("The time offset when compare the current time with the beat time.")]
-        public float AllowedTimeOffset = 0.15f;
+        public float AllowedTimeOffset = 0.05f;
+
+        /// <summary>
+        /// 自动调整 Time Offset
+        /// </summary>
+        public bool AutoAdjustOffset;
+
+        private float evaluateStartTime = -1;
+        private float evaluatePassedTime = 0;
+        private int lossTimes = 0;
+        private float lossPercent = 0;
+        private float minDelayedTime = 0;
 
         /// <summary>
         /// 是否忽略节奏点丢失
         /// </summary>
-        public bool IsBeatLossIgnored = false;
+        public bool IgnoreBeatLoss = true;
+
+        
 
         void Start()
         {
@@ -80,26 +102,40 @@ namespace XcantloadX.DL.Music
                 return;
 
 
+            bool haveBeatLoss = false; //是否检测到节奏点丢失
+            float delayedTime = (float)Song.Beat2Time(Math.Abs(beatPosition - Song.Beats[this.currentIndex])); //计算理想时间与实际时间的差值
+
             //比较节拍位置
-            if (Math.Abs(beatPosition - Song.Beats[this.currentIndex]) <= this.AllowedTimeOffset)
+            if (delayedTime < this.AllowedTimeOffset)
             {
                 if(this.BeatEvent != null)
                     this.BeatEvent(this.timePosition, this.beatPosition, this.currentIndex); //触发事件
                 currentIndex++;
             }
-            else if (beatPosition >= Song.Beats[currentIndex]) //如果当前位置比下一次节拍位置要大，说明上一次没有检测到
+            else if (beatPosition >= Song.Beats[currentIndex]) //如果当前位置比下一次节奏点位置要大，说明上一次没有检测到
             {
-                Debug.LogWarning("Detected beat loss!");
+                haveBeatLoss = true;
+                //进行自动检测调整
+                if (this.AutoAdjustOffset)
+                    AdjustTimeOffset(haveBeatLoss, delayedTime);
 
-                if(this.IsBeatLossIgnored && this.BeatEvent != null)
+                if(this.IgnoreBeatLoss && this.BeatEvent != null)
                     this.BeatEvent(this.timePosition, this.beatPosition, this.currentIndex);
                 else if(this.BeatLossEvent != null)
                     this.BeatLossEvent(Song.Beats[currentIndex], beatPosition); //触发事件
 
+                //跳过所有的丢失节奏点
+                int oldIndex = currentIndex;
                 while (beatPosition >= Song.Beats[currentIndex])
                     currentIndex++;
+
+                //输出警告
+                Debug.LogWarning("Detected beat loss! Skiped " + (currentIndex - oldIndex) + " beats.");
             }
 
+            //进行自动检测调整
+            if (this.AutoAdjustOffset)
+                AdjustTimeOffset(haveBeatLoss, delayedTime);
         }
 
         //初始化脚本
@@ -127,6 +163,61 @@ namespace XcantloadX.DL.Music
 
             this.isInited = true;
         }
+
+        /// <summary>
+        /// 自动调整 Time Offset
+        /// </summary>
+        /// <param name="beatLoss">是否有节奏点丢失</param>
+        /// <param name="delayedTime">理想时间与实际时间的差值</param>
+        private void AdjustTimeOffset(bool beatLoss, float delayedTime)
+        {
+            //初始化时间
+            if (this.evaluateStartTime < 0)
+                this.evaluateStartTime = Time.time;
+
+            //更新时间、丢失次数、丢失率
+            evaluatePassedTime = Time.time - evaluateStartTime;
+            if (beatLoss)
+                lossTimes++;
+            lossPercent = lossTimes / evaluatePassedTime;
+
+            //不在一个节奏点内且没有节奏点丢失
+            if (delayedTime > AllowedTimeOffset && !beatLoss)
+                return;
+
+            //取得最小差值
+            if (minDelayedTime == 0)
+            {
+                minDelayedTime = delayedTime;
+                return;
+            }
+            if(delayedTime != 0)
+                minDelayedTime = Math.Min(minDelayedTime, delayedTime);
+
+            bool reset = false;
+
+            if (lossPercent > 0.5) //如果丢拍率超过 50%，自动增加 Time Offset
+            {
+                AllowedTimeOffset = minDelayedTime * 1.1f;
+                reset = true;
+            }
+            if (evaluatePassedTime > 2f)
+            {
+                AllowedTimeOffset = minDelayedTime * 1.02f; //将最小差值作为 Time Offset
+                reset = true;
+            }
+
+            //重置数据
+            if(reset)
+            {
+                this.evaluateStartTime = Time.time;
+                this.lossTimes = 0;
+                this.lossPercent = 0;
+                this.minDelayedTime = 0;
+            }
+        }
+
+
 
         /// <summary>
         /// 加载指定歌曲

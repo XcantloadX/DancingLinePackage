@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_5
+#if UNITY_EDITOR_WIN
 
 // 来回切网易云音乐实在是太麻烦了
 [InitializeOnLoadAttribute]
@@ -42,6 +44,9 @@ public static class NeteaseMusicAutomatic
     }
 }
 
+/// <summary>
+/// 获取 Editor 的运行状态，Unity 5 以上不需要
+/// </summary>
 public static class EditorState {
 
     public static bool willEnterPlayMode {
@@ -64,4 +69,7 @@ public static class EditorState {
                      && !EditorApplication.isPlayingOrWillChangePlaymode; }
     }
 }
+
+#endif
+#endif
 
