@@ -7,9 +7,9 @@ using XcantloadX.DL.Music;
 /// <summary>
 /// 绑定节奏点与动画
 /// </summary>
-public class BeatAnimationBinding : BeatTrigger 
+public class BeatAnimationBinding : BeatTrigger
 {
-    public new Animation animation;
+    private Animation animation;
 
     protected new void Start()
     {

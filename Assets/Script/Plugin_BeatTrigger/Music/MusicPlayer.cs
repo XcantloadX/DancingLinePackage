@@ -15,10 +15,14 @@ namespace XcantloadX.DL.Music
         public MalodySong Song { get; private set;}
 
         [Header("Music")]
-        [SerializeField] private AudioClip audioClip; //待播放的 AudioClip
+
+
+        [SerializeField]
+        [NullCheck(true, "Please attach a AudioClip!")]
+        private AudioClip audioClip; //待播放的 AudioClip
         public string beatmapPath;
 
-        [SerializeField] private double startTime = 0;
+        private double startTime = 0;
         [SerializeField] private double timePosition = 0; //当前的播放位置（秒）
         /// <summary>
         /// 当前播放位置（以节拍计）
@@ -29,7 +33,7 @@ namespace XcantloadX.DL.Music
         /// </summary>
         [SerializeField] private int currentIndex = 0;
 
-        private bool isInited = false; //是否已经初始化
+        private bool inited = false; //是否已经初始化
 
         private static MusicPlayer _main = null;
         public static MusicPlayer Main
@@ -80,14 +84,14 @@ namespace XcantloadX.DL.Music
         void Start()
         {
             //TODO:设计Editor GUI
-
+            
             Init();
         }
 
 
         void Update()
         {
-            if (!this.IsPlaying || !this.isInited)
+            if (!this.IsPlaying || !this.inited)
                 return;
 
             //计算当前播放位置
@@ -141,12 +145,8 @@ namespace XcantloadX.DL.Music
         //初始化脚本
         private void Init()
         {
-            if (this.isInited)
+            if (this.inited)
                 return;
-
-            //检查 AudioClip
-            if (this.audioClip == null)
-                throw new Exception("Please attach a AudioClip!");
 
             //加载 AudioSource
             if (this.audioSource == null)
@@ -161,7 +161,7 @@ namespace XcantloadX.DL.Music
             else
                 LoadSong(MalodySong.CreateFromMalody(System.IO.File.ReadAllText(this.beatmapPath)));
 
-            this.isInited = true;
+            this.inited = true;
         }
 
         /// <summary>

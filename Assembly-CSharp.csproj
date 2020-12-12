@@ -47,9 +47,9 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Script\Helper\RoadBuilder.cs" />
-     <Compile Include="Assets\Script\Level\CameraFollowing.cs" />
      <Compile Include="Assets\Script\Level\LevelContoller.cs" />
      <Compile Include="Assets\Script\Line\AutoPlay.cs" />
+     <Compile Include="Assets\Script\Line\CameraFollowing.cs" />
      <Compile Include="Assets\Script\Line\TheLine.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Animation\BeatAnimationBinding.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Animation\RelativePositonForAnimation.cs" />
@@ -57,7 +57,9 @@
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\BeatTrigger.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\MalodySong.cs" />
      <Compile Include="Assets\Script\Plugin_BeatTrigger\Music\MusicPlayer.cs" />
+     <Compile Include="Assets\Script\Util\DebugMessage.cs" />
      <Compile Include="Assets\Script\Util\NullCheck.cs" />
+     <Compile Include="Assets\Test\AnimTest.cs" />
      <Compile Include="Assets\Test\PlayerTester.cs" />
      <Compile Include="Assets\Test\TestAnimator.cs" />
      <None Include="Assets\Plugins\DOTween\readme.txt" />

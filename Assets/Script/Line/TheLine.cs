@@ -28,7 +28,7 @@ namespace XcantloadX.DL.Main
 
         void Start () 
         {
-            NullCheck.Check(this);
+            NullCheck.Run(this);
             this.GetComponent<MeshRenderer>().material.color = this.lineColor;
         }
 

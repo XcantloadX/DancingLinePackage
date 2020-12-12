@@ -1,6 +1,3 @@
 # DancingLine Package
-
-**停止更新**  
-
- > Dancling Line   
-  2020.5.4  
+Do whatever you want with this.  
+May do not update anymore.  

@@ -14,25 +14,14 @@ public class AutoPlay : MonoBehaviour
     [NullCheck]
     public MusicPlayer musicPlayer;
 
-    private float timer = 0;
-    private bool isShow = false;
-
 	void Start () 
     {
-        NullCheck.Check(this);
+        NullCheck.Run(this);
         musicPlayer.BeatEvent += OnBeatEvent;
 	}
 	
 	void Update () 
     {
-        //计时器
-        //实现闪烁“Auto Mode”文本
-        timer += Time.deltaTime;
-        if (timer >= 0.5f)
-        {
-            isShow = !isShow;
-            timer = 0;
-        }
 	}
 
     private void OnBeatEvent(double timePosition, double beatPosition, int beatIndex)
@@ -43,13 +32,10 @@ public class AutoPlay : MonoBehaviour
     //绘制 Auto Mode 文本
     private void OnGUI()
     {
-        if (!isShow)
-            return;
-
         GUIStyle style = new GUIStyle();
-        style.fontSize = 30;
-        style.normal.textColor = Color.red;
+        style.fontSize = 25;
+        style.normal.textColor = Color.white;
 
-        GUI.Label(new Rect(0, 0, 300, 200), "Auto Mode", style);
+        GUI.Label(new Rect(0, 0, 300, 200), "AutoPlay", style);
     }
 }

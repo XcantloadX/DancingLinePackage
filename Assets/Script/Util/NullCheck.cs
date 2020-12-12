@@ -56,7 +56,7 @@ public class NullCheck : Attribute
     /// 检查实例的指定字段是否为空
     /// </summary>
     /// <param name="obj">要检查的实例</param>
-    public static void Check(object obj)
+    public static void Run(object obj)
     {
         //确保 obj 不为空
         if (obj == null)

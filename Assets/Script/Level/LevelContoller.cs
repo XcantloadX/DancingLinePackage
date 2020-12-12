@@ -31,7 +31,7 @@ namespace XcantloadX.DL.Main
 
         void Start () 
         {
-            NullCheck.Check(this);
+            NullCheck.Run(this);
         }
             
         void Update () 
